@@ -39,15 +39,15 @@ top_10 = slopes.nlargest(10, 'Growth_Rate').sort_values('Growth_Rate', ascending
 fig = make_subplots(
     rows=2, cols=2,
     subplot_titles=(
-        "Top 10 Growth Rates (Click a Bar to See Trend Below)", 
-        "", 
-        "Global Life Expectancy Map", 
-        "Distribution by Continent"
+        "Top 10 Growth Rates (Click a Bar to See Trend Below)", # Row 1, Col 1
+        "",                                                  # Row 1, Col 2 (Hidden by colspan)
+        "Global Life Expectancy Map",                        # Row 2, Col 1
+        "Distribution by Continent"                          # Row 2, Col 2
     ),
     vertical_spacing=0.15,
     horizontal_spacing=0.22,
-    specs=[[{"colspan": 2}, None], 
-           [{"type": "geo"}, {"type": "box"}]]
+    specs=[[{"colspan": 2}, None], # Top row spans 2 columns
+           [{"type": "geo"}, {"type": "box"}]] # Bottom row
 )
 
 # Plot 1: Bar
@@ -136,4 +136,5 @@ trend_fig.update_layout(
 )
 
 st.plotly_chart(trend_fig, use_container_width=True)
+
 
