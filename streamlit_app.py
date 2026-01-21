@@ -44,7 +44,8 @@ fig = make_subplots(
         "Top 10 Growth Rates (Click a Bar to See Trend Below)", 
         "", # Empty title for the spanned cell
         "Global Life Expectancy Map", 
-        "Distribution by Continent"
+        "Distribution by Continent",
+        "Detailed Historical Trend: Mozambique"
     ),
     vertical_spacing=0.15,
     horizontal_spacing=0.22,
@@ -137,4 +138,5 @@ trend_fig.update_layout(
 )
 
 st.plotly_chart(trend_fig, use_container_width=True)
+
 
