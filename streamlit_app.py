@@ -52,9 +52,19 @@ fig = make_subplots(
 
 # Plot 1: Bar
 fig.add_trace(go.Bar(
-    x=top_10['Growth_Rate'], y=top_10['Entity'], orientation='h',
+    x=top_10['Growth_Rate'], 
+    y=top_10['Entity'], 
+    orientation='h',
     marker=dict(color=top_10['Growth_Rate'], colorscale='Viridis'), 
-    showlegend=False, customdata=top_10['Entity']
+    showlegend=False, 
+    customdata=top_10['Entity'],
+    # --- ADD THIS SECTION TO PREVENT DIMMING ---
+    unselected=dict(
+        marker=dict(opacity=1) # Keeps the bars at 100% opacity even when unselected
+    ),
+    selected=dict(
+        marker=dict(opacity=1) # Ensures selected bars also stay at 100% opacity
+    )
 ), row=1, col=1)
 
 # Plot 3: Map
@@ -126,3 +136,4 @@ trend_fig.update_layout(
 )
 
 st.plotly_chart(trend_fig, use_container_width=True)
+
