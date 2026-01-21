@@ -41,8 +41,8 @@ st.info("💡 **Interactive Guide:** Click on a bar in the **Top 10** chart or a
 fig = make_subplots(
     rows=2, cols=2,
     subplot_titles=(
-        "Top 10 Growth Rates (Click a Bar)", 
-        "Global Life Expectancy Map", 
+        "Top 10 Growth Rates (Click a Bar to see the Trend)", 
+        "Global Life Expectancy Map (Select a Country to see the Trend)", 
         "Distribution by Continent"
     ),
     vertical_spacing=0.18,
@@ -130,5 +130,6 @@ trend_fig.update_layout(
 )
 
 st.plotly_chart(trend_fig, use_container_width=True)
+
 
 
