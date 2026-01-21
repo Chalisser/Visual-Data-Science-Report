@@ -71,7 +71,13 @@ fig.add_trace(go.Choropleth(
     z=latest_year_data['Life expectancy-female'],
     text=latest_year_data['Entity'],
     colorscale='Cividis',
-    colorbar=dict(thickness=15, len=0.4, x=0.48, y=0.2, title="Age"),
+    colorbar=dict(
+        thickness=15, 
+        len=0.5, 
+        x=-0.15, # Move to far left to avoid middle overlap
+        y=0.2, 
+        title="Age"
+    ),
     name="Map"), row=2, col=1)
 
 # Plot 4: Box Plot
@@ -93,4 +99,5 @@ fig.update_geos(projection_type="robinson", showocean=True, oceancolor="#1a1a1a"
 
 # Render the Plotly figure in Streamlit
 st.plotly_chart(fig, use_container_width=True)
+
 
