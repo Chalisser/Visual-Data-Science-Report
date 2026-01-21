@@ -41,12 +41,12 @@ fig = make_subplots(
     rows=2, cols=2,
     subplot_titles=(
         "Top 10 Growth Rates", 
-        "Historical Trend (Select in Sidebar)",
+        "Historical Trend",
         "Global Life Expectancy Map", 
         "Distribution by Continent"
     ),
-    vertical_spacing=0.2,
-    horizontal_spacing=0.1,
+    vertical_spacing=0.25,
+    horizontal_spacing=0.22, # Increased from 0.15 to prevent overlap
     specs=[[{"type": "bar"}, {"type": "scatter"}],
            [{"type": "geo"}, {"type": "box"}]]
 )
@@ -93,3 +93,4 @@ fig.update_geos(projection_type="robinson", showocean=True, oceancolor="#1a1a1a"
 
 # Render the Plotly figure in Streamlit
 st.plotly_chart(fig, use_container_width=True)
+
