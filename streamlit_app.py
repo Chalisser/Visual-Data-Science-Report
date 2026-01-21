@@ -40,7 +40,6 @@ fig = make_subplots(
     rows=2, cols=2,
     subplot_titles=(
         "Top 10 Growth Rates (Click a Bar to See Trend Below)", # Row 1, Col 1 (Starts here)
-        "",                                                  # Row 1, Col 2 (STAY EMPTY - because of colspan)
         "Global Life Expectancy Map",                        # Row 2, Col 1 (Centers over Map)
         "Distribution by Continent"                          # Row 2, Col 2 (Centers over Box Plot)
     ),
@@ -136,6 +135,7 @@ trend_fig.update_layout(
 )
 
 st.plotly_chart(trend_fig, use_container_width=True)
+
 
 
 
