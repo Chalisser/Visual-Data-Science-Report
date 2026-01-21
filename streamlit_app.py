@@ -32,35 +32,29 @@ def get_slope(group):
     slope, _, _, _, _ = linregress(group['Year'], group['Life expectancy-female'])
     return slope
 
-# SILENCE WARNING: Added include_groups=False as requested by your terminal error
 slopes = filtered_df.groupby('Entity').apply(get_slope, include_groups=False).reset_index(name='Growth_Rate')
 top_10 = slopes.nlargest(10, 'Growth_Rate').sort_values('Growth_Rate', ascending=True)
 
-# --- 3. Constructing Dashboard with New Grid ---
-# We use 'specs' to make the first plot span across both columns
+# --- 3. Constructing Dashboard ---
 fig = make_subplots(
     rows=2, cols=2,
     subplot_titles=(
         "Top 10 Growth Rates (Click a Bar to See Trend Below)", 
-        "", # Empty title for the spanned cell
+        "", 
         "Global Life Expectancy Map", 
-        "Distribution by Continent",
-        "Detailed Historical Trend: Mozambique"
+        "Distribution by Continent"
     ),
     vertical_spacing=0.15,
     horizontal_spacing=0.22,
-    specs=[[{"colspan": 2}, None], # Top row: 1 plot spanning 2 columns
-           [{"type": "geo"}, {"type": "box"}]] # Bottom row: Map and Box Plot
+    specs=[[{"colspan": 2}, None], 
+           [{"type": "geo"}, {"type": "box"}]]
 )
 
-# Plot 1: Bar (Now spans the full top row)
+# Plot 1: Bar
 fig.add_trace(go.Bar(
-    x=top_10['Growth_Rate'], 
-    y=top_10['Entity'], 
-    orientation='h',
+    x=top_10['Growth_Rate'], y=top_10['Entity'], orientation='h',
     marker=dict(color=top_10['Growth_Rate'], colorscale='Viridis'), 
-    showlegend=False, 
-    customdata=top_10['Entity']
+    showlegend=False, customdata=top_10['Entity']
 ), row=1, col=1)
 
 # Plot 3: Map
@@ -79,8 +73,7 @@ fig.add_trace(go.Choropleth(
 for continent in filtered_df['Continent'].unique():
     fig.add_trace(go.Box(
         y=filtered_df[filtered_df['Continent'] == continent]['Life expectancy-female'],
-        name=str(continent), 
-        showlegend=False
+        name=str(continent), showlegend=False
     ), row=2, col=2)
 
 fig.update_layout(
@@ -96,32 +89,27 @@ fig.update_layout(
 fig.update_geos(projection_type="robinson", showocean=True, oceancolor="#1a1a1a", row=2, col=1)
 
 # --- 4. BRUSHING INTERACTION ---
-# This captures the click data from the main dashboard
+# Render main dashboard
 event_data = st.plotly_chart(fig, use_container_width=True, on_select="rerun")
 
-# Default selection from sidebar
-st.sidebar.title("Controls")
-sidebar_selection = st.sidebar.selectbox("Manual Selection", top_10['Entity'].unique())
+# Initialize default country (The highest growth rate country)
+selected_country = top_10['Entity'].iloc[-1] 
 
-selected_country = sidebar_selection 
-
-# Brushing logic: Check if user clicked the Bar Chart or the Map
+# Update selected_country if a user clicks a graph element
 if event_data and "selection" in event_data:
     points = event_data["selection"]["points"]
     if points:
-        # Check customdata first (for Bar), then text (for Map), then y (fallback)
         selected_country = points[0].get("customdata") or points[0].get("text") or points[0].get("y")
 
-# --- 5. THE DYNAMIC TREND LINE (Separated from the grid) ---
-st.divider() # Visual separation
+# --- 5. THE DYNAMIC TREND LINE ---
+st.divider()
 st.subheader(f"Detailed Historical Trend: {selected_country}")
 
 trend_fig = go.Figure()
 country_df = filtered_df[filtered_df['Entity'] == selected_country]
 
 trend_fig.add_trace(go.Scatter(
-    x=country_df['Year'], 
-    y=country_df['Life expectancy-female'],
+    x=country_df['Year'], y=country_df['Life expectancy-female'],
     mode='lines+markers', 
     line=dict(color='#00CC96', width=3),
     marker=dict(size=8, color='white', line=dict(width=2, color='#00CC96'))
@@ -131,12 +119,10 @@ trend_fig.update_layout(
     template="plotly_dark",
     height=400,
     xaxis_title="Year",
-    yaxis_title="Life Expectancy (Age)",
+    yaxis_title="Age",
     margin=dict(t=20, b=40, l=40, r=20),
     paper_bgcolor="rgba(0,0,0,0)",
     plot_bgcolor="rgba(20,20,20,0.5)"
 )
 
 st.plotly_chart(trend_fig, use_container_width=True)
-
-
