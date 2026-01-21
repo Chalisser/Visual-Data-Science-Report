@@ -87,9 +87,11 @@ fig.update_layout(
     plot_bgcolor="rgba(0,0,0,0)",
     height=850,
     margin=dict(t=80, b=20, l=20, r=20),
+    # --- CENTER THE TITLE HERE ---
     title_text="Global Life Expectancy: Spatial & Temporal Analysis",
-    title_x=0.5,
-    clickmode='event+select'
+    title_x=0.5,           # 0.5 centers the title
+    title_xanchor='center', # Ensures the anchor point is the center of the text
+    title_font=dict(size=24) # Optional: Increase size for better visibility
 )
 fig.update_geos(projection_type="robinson", showocean=True, oceancolor="#1a1a1a", row=2, col=1)
 
@@ -128,4 +130,5 @@ trend_fig.update_layout(
 )
 
 st.plotly_chart(trend_fig, use_container_width=True)
+
 
